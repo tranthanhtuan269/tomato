@@ -11,12 +11,11 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::get('/', 'HomeController@welcome')->name('welcome');
 Auth::routes();
-
+Route::get('/profile', 'HomeController@profile')->name('profile');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('groups', 'GroupController');
+Route::resource('groups', 'GroupController');
+Route::resource('users', 'UserController');
 Route::resource('conversations', 'ConversationController');
