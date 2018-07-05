@@ -19,6 +19,7 @@ window.Bus = new Vue();
 // Vue.component('example', require('./components/Example.vue'));
 Vue.component('groups', require('./components/Groups.vue'));
 Vue.component('create-group', require('./components/CreateGroup.vue'));
+Vue.component('create-channel', require('./components/CreateChannel.vue'));
 Vue.component('group-chat', require('./components/GroupChat.vue'));
 
 const app = new Vue({

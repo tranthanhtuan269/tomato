@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Group;
 use App\User;
+use App\Channel;
+use App\Language;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -24,7 +26,11 @@ class HomeController extends Controller
         $users = User::where('id', '<>', auth()->user()->id)->get();
         $user = auth()->user();
 
-        return view('home', ['groups' => $groups, 'users' => $users, 'user' => $user]);
+        $languages = Language::get();
+
+        $channels = Channel::get();
+
+        return view('home', ['groups' => $groups, 'users' => $users, 'user' => $user, 'languages' => $languages, 'channels' => $channels]);
     }
 
     public function profile(){
