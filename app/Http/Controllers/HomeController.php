@@ -26,11 +26,7 @@ class HomeController extends Controller
         $users = User::where('id', '<>', auth()->user()->id)->get();
         $user = auth()->user();
 
-        $languages = Language::get();
-
-        $channels = Channel::get();
-
-        return view('home', ['groups' => $groups, 'users' => $users, 'user' => $user, 'languages' => $languages, 'channels' => $channels]);
+        return view('home', ['groups' => $groups, 'users' => $users, 'user' => $user]);
     }
 
     public function profile(){

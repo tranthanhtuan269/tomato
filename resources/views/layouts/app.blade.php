@@ -13,6 +13,8 @@
     <!-- Styles -->
     <link href="{{ asset('public/css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('public/css/web.css') }}" rel="stylesheet">
+    <link href="{{ asset('public/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('public/css/multi-select.css') }}" media="screen" rel="stylesheet" type="text/css">
 
     <base href="{{ url('/') }}" target="_sefl">
 </head>
@@ -43,7 +45,14 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Channels <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 @foreach($channels as $channel)
-                                <li><a href="{{ url('/') }}/channels/{{ $channel->id }}">{{ $channel->name }}</a></li>
+                                <li class="dropdown-submenu">
+                                    <a href="{{ url('/') }}/channels/{{ $channel->id }}">{{ $channel->name }}</a>
+                                    <ul class="dropdown-menu">
+                                        @foreach($channel->groups as $group)
+                                        <li><a href="{{ url('/') }}/groups/{{ $group->id }}">{{ $group->name }}</a></li>
+                                        @endforeach
+                                    </ul>
+                                </li>
                                 @endforeach
                             </ul>
                         </li>
@@ -130,6 +139,7 @@
     </div>
     <!-- Scripts -->
     <script src="{{ asset('public/js/app.js') }}"></script>
+    <script src="{{ asset('public/js/jquery.multi-select.js') }}" type="text/javascript"></script>
     <script src="{{ asset('public/js/script.js') }}"></script>
 </body>
 </html>

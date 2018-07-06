@@ -2026,25 +2026,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['initialUsers', 'channel'],
+    props: ['initialUsers', 'initialChannel'],
 
     data: function data() {
         return {
             name: '',
-            users: []
+            users1: [],
+            users2: [],
+            channel: ''
         };
     },
 
 
     methods: {
-        createGroup: function createGroup() {
+        createGroupSource: function createGroupSource() {
             var _this = this;
 
-            axios.post('/groups', { name: this.name, users: this.users }).then(function (response) {
+            axios.post('/groups', { users: this.users1, name: "Source team", channel: this.initialChannel.id }).then(function (response) {
                 _this.name = '';
                 _this.users = [];
+                Bus.$emit('groupCreated', response.data);
+                _this.createGroupTarget();
+            });
+        },
+        createGroupTarget: function createGroupTarget() {
+            var _this2 = this;
+
+            axios.post('/groups', { users: this.users2, name: "Target team", channel: this.initialChannel.id }).then(function (response) {
+                _this2.name = '';
+                _this2.users = [];
                 Bus.$emit('groupCreated', response.data);
             });
         }
@@ -37958,24 +37971,45 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel panel-default"
   }, [_c('div', {
     staticClass: "panel-heading"
-  }, [_vm._v(_vm._s(_vm.channel.name))]), _vm._v(" "), _c('div', {
+  }, [_vm._v(_vm._s(_vm.initialChannel.name))]), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
-  }, [_c('form', [_c('div', {
+  }, [_c('form', [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.initialChannel.id),
+      expression: "initialChannel.id"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.initialChannel.id)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.$set(_vm.initialChannel, "id", $event.target.value)
+      }
+    }
+  }), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     staticClass: "col-sm-12 text-left border-bottom",
     attrs: {
       "for": "inputPassword"
     }
-  }, [_vm._v("Source team (" + _vm._s(_vm.channel.source_language) + " - " + _vm._s(_vm.channel.target_language1) + ")")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Source team (" + _vm._s(_vm.initialChannel.source_language) + " - " + _vm._s(_vm.initialChannel.target_language1) + ")")]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-12"
   }, [_c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.users),
-      expression: "users"
+      value: (_vm.users1),
+      expression: "users1"
     }],
+    staticClass: "user-select",
     attrs: {
       "multiple": ""
     },
@@ -37987,7 +38021,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           var val = "_value" in o ? o._value : o.value;
           return val
         });
-        _vm.users = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+        _vm.users1 = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
       }
     }
   }, _vm._l((_vm.initialUsers), function(user) {
@@ -38003,15 +38037,16 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "for": "inputPassword"
     }
-  }, [_vm._v("Target team (" + _vm._s(_vm.channel.target_language1) + " - " + _vm._s(_vm.channel.target_language2) + ")")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Target team (" + _vm._s(_vm.initialChannel.target_language1) + " - " + _vm._s(_vm.initialChannel.target_language2) + ")")]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-12"
   }, [_c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.users),
-      expression: "users"
+      value: (_vm.users2),
+      expression: "users2"
     }],
+    staticClass: "user-select",
     attrs: {
       "multiple": ""
     },
@@ -38023,7 +38058,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           var val = "_value" in o ? o._value : o.value;
           return val
         });
-        _vm.users = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+        _vm.users2 = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
       }
     }
   }, _vm._l((_vm.initialUsers), function(user) {
@@ -38042,7 +38077,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": function($event) {
         $event.preventDefault();
-        return _vm.createGroup($event)
+        return _vm.createGroupSource($event)
       }
     }
   }, [_vm._v("Create Group")])])])

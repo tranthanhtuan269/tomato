@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-6">
-            <create-group :initial-users="{{ $users }}" :initial-channel="{{ $channel }}"></create-group>
+            <groups :initial-groups="{{ $groups }}" :user="{{ $user }}"></groups>
         </div>
     </div>
 </div>

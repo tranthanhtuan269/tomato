@@ -16,10 +16,7 @@ class ChannelController extends Controller
         $users = User::where('id', '<>', auth()->user()->id)->get();
         $user = auth()->user();
 
-        $languages = Language::get();
-
-        $channels = Channel::get();
-        return view('channel.view', ['users' => $users, 'user' => $user, 'languages' => $languages, 'channel' => $channel, 'channels' => $channels]);
+        return view('channel.view', ['users' => $users, 'user' => $user, 'channel' => $channel]);
     }
 
     public function store(Request $request)
