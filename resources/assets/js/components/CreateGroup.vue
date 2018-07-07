@@ -27,7 +27,7 @@
             </form>
         </div>
         <div class="panel-footer text-center">
-            <button type="submit" @click.prevent="createGroupSource" class="btn btn-primary">Create Group</button>
+            <button type="submit" @click.prevent="createGroup" class="btn btn-primary">Create Group</button>
         </div>
     </div>
 </template>
@@ -46,18 +46,8 @@
         },
 
         methods: {
-            createGroupSource() {
-                axios.post('/groups', {users: this.users1, name: "Source team", channel: this.initialChannel.id})
-                .then((response) => {
-                    this.name = '';
-                    this.users = [];
-                    Bus.$emit('groupCreated', response.data);
-                    this.createGroupTarget();
-                });
-            },
-
-            createGroupTarget() {
-                axios.post('/groups', {users: this.users2, name: "Target team", channel: this.initialChannel.id})
+            createGroup() {
+                axios.post('/groups', {users1: this.users1, users: this.users2, channel: this.initialChannel.id})
                 .then((response) => {
                     this.name = '';
                     this.users = [];
