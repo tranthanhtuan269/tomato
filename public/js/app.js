@@ -37870,7 +37870,9 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('div', {
+  return _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('div', {
     staticClass: "panel panel-primary"
   }, [_c('div', {
     staticClass: "panel-heading",
@@ -37921,7 +37923,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control input-sm",
     attrs: {
-      "id": "btn-input",
       "type": "text",
       "placeholder": "Type your message here...",
       "autofocus": ""

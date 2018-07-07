@@ -1,6 +1,6 @@
 <template>
-    <div>
-    <div class="panel panel-primary">
+    <div class="col-sm-6">
+        <div class="panel panel-primary">
             <div class="panel-heading" id="accordion">
                 <span class="glyphicon glyphicon-comment"></span> {{ group.name }}
                 <div class="btn-group pull-right">
@@ -29,7 +29,7 @@
                 </div>
                 <div class="panel-footer">
                     <div class="input-group">
-                        <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..." v-model="message" @keyup.enter="store()" autofocus />
+                        <input type="text" class="form-control input-sm" placeholder="Type your message here..." v-model="message" @keyup.enter="store()" autofocus />
                         <span class="input-group-btn">
                             <button class="btn btn-warning btn-sm" id="btn-chat" @click.prevent="store()">
                                 Send</button>
