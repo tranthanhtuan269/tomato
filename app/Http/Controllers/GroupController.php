@@ -10,14 +10,11 @@ class GroupController extends Controller
 {
 	public function show($id){
 		$groups = [];
-		$group = Group::find($id);
-		if($group->name == "Source team"){
-			$groups = Group::where('id', '=', $id)->get();
-		}else if($group->name == "Target team"){
-			$groups = Group::where('channel_id', '=', $group->channel_id)->get();
-		}
-		// $groups = auth()->user()->groups;
+		$groups = Group::where('id', '=', $id)->get();
 		$user = auth()->user();
+        $type = \DB::table('group_user')->where('group_id', $id)->where('user_id', $user->id)->first();
+        $user->type = $type->type;
+
 		return view('group.show', ['groups' => $groups, 'user' => $user]);
 	}
 
@@ -27,16 +24,20 @@ class GroupController extends Controller
 
         // add group source team
         $group = new Group;
-        $group->name = request('name');
         $group->channel_id = request('channel');
+        $group->name = 'test';
         $group->created_at = $date;
         $group->updated_at = $date;
         $group->save();
 
         // add user for source team
-        $users = collect(request('users'));
+        $users = collect();
+        $users1 = collect(request('users1'));
+        $users2 = collect(request('users'));
         $users->push(auth()->user()->id);
-        $group->users()->attach($users);
+        $group->users()->attach($users, ['type' => 0]);
+        $group->users()->attach($users1, ['type' => 1]);
+        $group->users()->attach($users2, ['type' => 2]);
         broadcast(new GroupCreated($group))->toOthers();
         return $group;
     }
