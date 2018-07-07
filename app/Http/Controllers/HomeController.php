@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Group;
 use App\User;
+use App\Channel;
+use App\Language;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -16,6 +18,19 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+    }
+
+    public function welcome(){
+        $groups = auth()->user()->groups;
+
+        $users = User::where('id', '<>', auth()->user()->id)->get();
+        $user = auth()->user();
+
+        return view('home', ['groups' => $groups, 'users' => $users, 'user' => $user]);
+    }
+
+    public function profile(){
+        return view('auth.profile');
     }
 
     /**

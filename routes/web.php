@@ -11,12 +11,12 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::get('/', 'HomeController@index')->name('welcome');
 Auth::routes();
-
+Route::get('/profile', 'HomeController@profile')->name('profile');
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('channels/{id}', 'ChannelController@show');
+Route::post('channels/store', 'ChannelController@store');
 Route::resource('groups', 'GroupController');
+Route::resource('users', 'UserController');
 Route::resource('conversations', 'ConversationController');
