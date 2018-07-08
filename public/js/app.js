@@ -2042,22 +2042,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
     methods: {
-        createGroupSource: function createGroupSource() {
+        createGroup: function createGroup() {
             var _this = this;
 
-            axios.post('/groups', { users: this.users1, name: "Source team", channel: this.initialChannel.id }).then(function (response) {
+            axios.post('/groups', { users1: this.users1, users: this.users2, channel: this.initialChannel.id }).then(function (response) {
                 _this.name = '';
                 _this.users = [];
-                Bus.$emit('groupCreated', response.data);
-                _this.createGroupTarget();
-            });
-        },
-        createGroupTarget: function createGroupTarget() {
-            var _this2 = this;
-
-            axios.post('/groups', { users: this.users2, name: "Target team", channel: this.initialChannel.id }).then(function (response) {
-                _this2.name = '';
-                _this2.users = [];
                 Bus.$emit('groupCreated', response.data);
             });
         }
@@ -2110,21 +2100,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['group'],
+    props: ['group', 'iuser'],
 
     data: function data() {
         return {
             conversations: [],
             message: '',
-            group_id: this.group.id
+            group_id: this.group.id,
+            user: this.iuser
         };
     },
     mounted: function mounted() {
+        this.user = this.iuser;
         this.listenForNewMessage();
     },
 
@@ -2133,7 +2122,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         store: function store() {
             var _this = this;
 
-            axios.post('/conversations', { message: this.message, group_id: this.group.id }).then(function (response) {
+            axios.post('/conversations', { message: this.message, group_id: this.group.id, type: this.user.type }).then(function (response) {
                 _this.message = '';
                 _this.conversations.push(response.data);
             });
@@ -2174,6 +2163,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var _this = this;
 
         this.groups = this.initialGroups;
+        this.iuser = this.user;
 
         Bus.$on('groupCreated', function (group) {
             _this.groups.push(group);
@@ -37870,35 +37860,13 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
+  return _c('div', [(_vm.user.type == 0 || _vm.user.type == 1) ? _c('div', [_c('div', {
     staticClass: "col-sm-6"
   }, [_c('div', {
     staticClass: "panel panel-primary"
   }, [_c('div', {
-    staticClass: "panel-heading",
-    attrs: {
-      "id": "accordion"
-    }
-  }, [_c('span', {
-    staticClass: "glyphicon glyphicon-comment"
-  }), _vm._v(" " + _vm._s(_vm.group.name) + "\n            "), _c('div', {
-    staticClass: "btn-group pull-right"
-  }, [_c('a', {
-    staticClass: "btn btn-default btn-xs",
-    attrs: {
-      "type": "button",
-      "data-toggle": "collapse",
-      "data-parent": "#accordion-",
-      "href": '#collapseOne-' + _vm.group.id
-    }
-  }, [_c('span', {
-    staticClass: "glyphicon glyphicon-chevron-down"
-  })])])]), _vm._v(" "), _c('div', {
-    staticClass: "panel-collapse collapse",
-    attrs: {
-      "id": 'collapseOne-' + _vm.group.id
-    }
-  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_vm._v("\r\n                    " + _vm._s(_vm.group.name) + " -iii -- " + _vm._s(_vm.user.type) + "\r\n                ")]), _vm._v(" "), _c('div', {
     staticClass: "panel-body chat-panel"
   }, [_c('ul', {
     staticClass: "chat"
@@ -37909,7 +37877,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "header"
     }, [_c('strong', {
       staticClass: "primary-font"
-    }, [_vm._v(_vm._s(conversation.user.name))])]), _vm._v(" "), _c('p', [_vm._v("\n                                " + _vm._s(conversation.message) + "\n                            ")])])])
+    }, [_vm._v(_vm._s(conversation.user.name))])]), _vm._v(" "), _c('p', [_vm._v("\r\n                                    " + _vm._s(conversation.message) + "\r\n                                ")])])])
   }))]), _vm._v(" "), _c('div', {
     staticClass: "panel-footer"
   }, [_c('div', {
@@ -37944,16 +37912,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "input-group-btn"
   }, [_c('button', {
     staticClass: "btn btn-warning btn-sm",
-    attrs: {
-      "id": "btn-chat"
-    },
     on: {
       "click": function($event) {
         $event.preventDefault();
         _vm.store()
       }
     }
-  }, [_vm._v("\n                            Send")])])])])])])])
+  }, [_vm._v("\r\n                                Send")])])])])])])]) : _vm._e()])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -38078,7 +38043,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": function($event) {
         $event.preventDefault();
-        return _vm.createGroupSource($event)
+        return _vm.createGroup($event)
       }
     }
   }, [_vm._v("Create Group")])])])
@@ -38100,7 +38065,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     return _c('group-chat', {
       key: group.id,
       attrs: {
-        "group": group
+        "group": group,
+        "iuser": _vm.iuser
       }
     })
   }))

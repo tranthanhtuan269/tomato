@@ -8,11 +8,12 @@ use Illuminate\Http\Request;
 
 class ConversationController extends Controller
 {
-    public function store()
+    public function store(Request $request)
     {
         $conversation = Conversation::create([
             'message' => request('message'),
             'group_id' => request('group_id'),
+            'type' => request('type'),
             'user_id' => auth()->user()->id,
         ]);
 

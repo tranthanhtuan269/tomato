@@ -1,3 +1,4 @@
+
 <template>
 <div>
     <div v-if="user.type==0||user.type==1">
@@ -58,7 +59,7 @@
 
         methods: {
             store() {
-                axios.post('/conversations', {message: this.message, group_id: this.group.id, type: this.user.type})
+                axios.post('/conversations', {message: this.message, group_id: this.group.id})
                 .then((response) => {
                     this.message = '';
                     this.conversations.push(response.data);
